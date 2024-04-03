@@ -2,7 +2,9 @@ menu = """
 [1] DEPOSITAR 
 [2] SACAR
 [3] EXTRATO
-[4] SAIR
+[4] ADICIONAR USUÁRIO
+[5] ADICIONAR CONTA
+[6] SAIR
 => """
 
 saldo = 0
@@ -10,6 +12,36 @@ limite = 500
 extrato = ''
 numero_saque = 0
 LIMITE_SAQUE = 3
+
+
+usuarios = {}
+
+def adicionar_usuario():
+    nome = input("Informe o nome do usuário: ")
+    data_nascimento = input("Informe a data de nascimento (formato dd/mm/aaaa): ")
+    cpf = input("Informe o CPF do usuário (somente números): ")
+    endereco = input("Informe o endereço completo do usuário (cidade, estado): ")
+
+    if cpf in usuarios:
+        print("CPF já cadastrado. Por favor, insira um CPF diferente.")
+        return
+
+    usuarios[cpf] = {
+        "nome": nome,
+        "data_nascimento": data_nascimento,
+        "endereco": endereco,
+        "saldo": 0  # Saldo inicial zerado
+    }
+
+    print("Usuário cadastrado com sucesso.")
+
+
+def adicionar_conta(cpf):
+    if cpf in usuarios:
+        saldo_inicial = float(input("Informe o saldo inicial da conta: "))
+        usuarios[cpf]["saldo"] += saldo_inicial  # Atualiza o saldo da conta ao adicionar o saldo inicial
+    else:
+        print("Usuário não encontrado.")
 
 def depositar(valor):
     global saldo, extrato
@@ -55,8 +87,15 @@ while True:
             
     elif opcao == '3':
         mostrar_extrato()
-        
+    
     elif opcao == '4':
+        adicionar_usuario()
+        
+    elif opcao == '5':
+        cpf = input("Informe o CPF do usuário para adicionar a conta: ")
+        adicionar_conta(cpf)
+        
+    elif opcao == '6':
         print("Saindo...")
         break
         
